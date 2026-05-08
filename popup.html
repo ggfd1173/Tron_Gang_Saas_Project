@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passive-Aggressive Assistant</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      width: 380px;
+      min-height: 500px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+      padding: 24px;
+    }
+    
+    h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    
+    .subtitle {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 24px;
+    }
+    
+    .stats-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .stat-row:last-child {
+      border-bottom: none;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    
+    .stat-value {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .settings-section {
+      margin-top: 20px;
+    }
+    
+    .settings-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    
+    .setting-item {
+      margin-bottom: 16px;
+    }
+    
+    .setting-label {
+      font-size: 13px;
+      display: block;
+      margin-bottom: 8px;
+      opacity: 0.9;
+    }
+    
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 14px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+    
+    select option {
+      background: #764ba2;
+      color: #ffffff;
+    }
+    
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .toggle-container:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 13px;
+      transition: background 0.3s;
+    }
+    
+    .toggle-switch.active {
+      background: #4ade80;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background: #ffffff;
+      border-radius: 50%;
+      transition: transform 0.3s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .toggle-switch.active .toggle-slider {
+      transform: translateX(22px);
+    }
+    
+    .weekly-report-btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 16px;
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(10px);
+    }
+    
+    .weekly-report-btn:hover {
+      background: rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+    }
+    
+    .weekly-report-btn:active {
+      transform: translateY(0);
+    }
+    
+    .emoji {
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🤨 Passive-Aggressive Assistant</h1>
+  <p class="subtitle">Judging your browsing since 5 minutes ago</p>
+  
+  <div class="stats-card">
+    <div class="stat-row">
+      <span class="stat-label">Tab switches today</span>
+      <span class="stat-value" id="tabSwitches">-</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Most visited category</span>
+      <span class="stat-value" id="topCategory">-</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Judgment level</span>
+      <span class="stat-value">High 📈</span>
+    </div>
+  </div>
+  
+  <div class="settings-section">
+    <div class="settings-title">Settings</div>
+    
+    <div class="setting-item">
+      <label class="setting-label">Personality</label>
+      <select id="personality">
+        <option value="brutally_honest">Brutally Honest Friend</option>
+        <option value="disappointed_parent">Disappointed Parent</option>
+        <option value="corporate_hr">Corporate HR</option>
+        <option value="documentary">Documentary Narrator</option>
+      </select>
+    </div>
+    
+    <div class="setting-item">
+      <label class="setting-label">Bubble Color Theme</label>
+      <select id="colorTheme">
+        <option value="purple">Purple Gradient (Default)</option>
+        <option value="blue">Ocean Blue</option>
+        <option value="green">Matrix Green</option>
+        <option value="red">Spicy Red</option>
+        <option value="orange">Sunset Orange</option>
+        <option value="pink">Bubblegum Pink</option>
+        <option value="dark">Dark Mode</option>
+        <option value="minimal">Minimal White</option>
+      </select>
+    </div>
+    
+    <div class="setting-item">
+      <div class="toggle-container" id="enableToggle">
+        <span class="setting-label" style="margin: 0;">Enable comments</span>
+        <div class="toggle-switch active">
+          <div class="toggle-slider"></div>
+        </div>
+      </div>
+    </div>
+    
+    <button class="weekly-report-btn" id="weeklyReport">
+      <span class="emoji">📊</span>
+      Generate Weekly Roast Report
+    </button>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
